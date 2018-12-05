@@ -62,7 +62,7 @@
 \RequirePackage{parskip}
 \RequirePackage[brazilian,hyperpageref]{backref}
 \RequirePackage[alf]{abntex2cite}	% Citações padrão ABNT
-
+\RequirePackage{ifthen}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
@@ -94,12 +94,19 @@
 
 \providecommand{\imprimirsubarea}{}
 \newcommand{\subarea}[1]{
-  \renewcommand{\imprimirsubarea}{Subárea do conhecimento: #1}
+  \renewcommand{\imprimirsubarea}{\ifthenelse{\equal{#1}{}}
+    {} % Se a opção for declarada vazia.
+    {Subárea do conhecimento: #1}
+  }
 }
 
 \providecommand{\imprimirespecialidade}{}
 \newcommand{\especialidade}[1]{
-  \renewcommand{\imprimirespecialidade}{Especialidade do conhecimento: #1}
+  \renewcommand{\imprimirespecialidade}{
+    \ifthenelse{\equal{#1}{}}
+    {} % Se a opção for declarada vazia.
+    {Especialidade do conhecimento: #1}
+  }
 }
 
 \providecommand{\imprimiragencia}{}
