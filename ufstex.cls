@@ -8,7 +8,13 @@
   \let\@pesquisatipo=0}
 
 \DeclareOption{picvol}{%
-  \let\@pesquisatipo=0}
+  \let\@pesquisatipo=1}
+
+\DeclareOption{parcial}{%
+  \let\@relatoriotipo=0}
+
+\DeclareOption{final}{%
+  \let\@relatoriotipo=1}
 
 
 \DeclareOption*{%
@@ -16,40 +22,47 @@
 }
 
 \ProcessOptions\relax
-% \LoadClass[a4paper]{article}
 \LoadClass[sumario = tradicional, 12pt, openright, oneside, a4paper]{abntex2}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% 
 
-\usepackage{subfig}
-\usepackage{geometry}
-\usepackage{caption}
-\usepackage{textcomp}
-\usepackage[utf8]{inputenc}
-\usepackage{cmap}
-\usepackage{indentfirst}
-\usepackage{color}		
-\usepackage{graphicx}
-\usepackage{multicol}
-\usepackage{multirow}
-\usepackage{lipsum}
-\usepackage{amsmath}
-\usepackage{epstopdf}
-\usepackage{enumitem}
-\usepackage{float}
-\usepackage[portuguese, ruled, linesnumbered]{algorithm2e}
-\usepackage[noend]{algpseudocode}
-\usepackage{longtable}
-\usepackage{tabularx}
-\usepackage{tabulary}
-\usepackage{multirow}
-\usepackage{array,colortbl,xcolor}
-\usepackage{syntax}
-\usepackage{listings}
-\usepackage{lscape}
-\usepackage{afterpage}
-\usepackage{capt-of}
-\usepackage{pdflscape}
+\RequirePackage{subfig}
+\RequirePackage{geometry}
+\RequirePackage{caption}
+\RequirePackage{textcomp}
+\RequirePackage[utf8]{inputenc}
+\RequirePackage{cmap}
+\RequirePackage{indentfirst}
+\RequirePackage{color}		
+\RequirePackage{graphicx}
+\RequirePackage{multicol}
+\RequirePackage{multirow}
+\RequirePackage{lipsum}
+\RequirePackage{amsmath}
+\RequirePackage{epstopdf}
+\RequirePackage{enumitem}
+\RequirePackage{float}
+\RequirePackage[portuguese, ruled, linesnumbered]{algorithm2e}
+\RequirePackage[noend]{algpseudocode}
+\RequirePackage{longtable}
+\RequirePackage{tabularx}
+\RequirePackage{tabulary}
+\RequirePackage{multirow}
+\RequirePackage{array,colortbl,xcolor}
+\RequirePackage{syntax}
+\RequirePackage{listings}
+\RequirePackage{lscape}
+\RequirePackage{afterpage}
+\RequirePackage{capt-of}
+\RequirePackage{pdflscape}
+\RequirePackage{cmap}               % Mapear caracteres especiais no PDF
+\RequirePackage[utf8]{inputenc}     % Codificacao do documento
+\RequirePackage{lastpage}           % Para total de páginas
+\RequirePackage{mathptmx}
+\RequirePackage{parskip}
+\RequirePackage[brazilian,hyperpageref]{backref}
+\RequirePackage[alf]{abntex2cite}	% Citações padrão ABNT
+
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
@@ -58,13 +71,119 @@
   \renewcommand{\imprimirperiodobolsa}{Periodo da bolsa: de #1 a #2}
 }
 
-% \providecommand{\imprimirtipobolsa}
+\providecommand{\imprimirtipobolsa}{}
+\if \@pesquisatipo0
+\renewcommand{\imprimirtipobolsa}{PROGRAMA INSTITUCIONAL DE BOLSAS DE INICIAÇÃO CIENTÍFICA – PIBIC}
+\else \if \@pesquisatipo1
+\renewcommand{\imprimirtipobolsa}{PROGRAMA DE INICIAÇÃO CIENTÍFICA VOLUNTÁRIA – PICVOL}
+\fi
+\fi
 
+\providecommand{\imprimirtiporelatorio}{}
+\if \@relatoriotipo0
+\renewcommand{\imprimirtiporelatorio}{Relatório Parcial}
+\else \if \@relatoriotipo1
+\renewcommand{\imprimirtiporelatorio}{Relatório Final}
+\fi
+\fi
 
+\providecommand{\imprimirarea}{}
+\newcommand{\area}[1]{
+  \renewcommand{\imprimirarea}{Área do conhecimento: #1}
+}
+
+\providecommand{\imprimirsubarea}{}
+\newcommand{\subarea}[1]{
+  \renewcommand{\imprimirsubarea}{Subárea do conhecimento: #1}
+}
+
+\providecommand{\imprimirespecialidade}{}
+\newcommand{\especialidade}[1]{
+  \renewcommand{\imprimirespecialidade}{Especialidade do conhecimento: #1}
+}
+
+\providecommand{\imprimiragencia}{}
+\newcommand{\agencia}[1]{
+  \renewcommand{\imprimiragencia}{Este projeto é desenvolvido com bolsa de iniciação científica \par
+    \if \@pesquisatipo0
+    PIBIC/#1
+    \else \if \@pesquisatipo1
+    PICVOL
+    \fi
+    \fi
+  }
+}
 
 
 \renewcommand{\imprimircapa}{%
   \begin{capa}%
-    \centering \includegraphics[scale=.3]{imagens/ufs_logo}
+    \begin{center}
+      \includegraphics[scale=.2]{imagens/ufs_logo} \par
+      SERVIÇO PÚBLICO FEDERAL \par
+      UNIVERSIDADE FEDERAL DE SERGIPE \par
+      PRÓ-REITORIA DE PÓS-GRADUAÇÃO E PESQUISA
+    \end{center}
+
+    \vspace*{1cm}
+    
+    \center \imprimirtipobolsa
+    \vspace*{\fill}
+
+    \begin{center}
+      \ABNTEXchapterfont\bfseries\LARGE\imprimirtitulo
+    \end{center}
+    \vspace*{\fill}
+
+    {\imprimirtiporelatorio}
+    
+    \imprimirarea
+
+    \imprimirsubarea
+
+    \imprimirespecialidade
+
+    \vspace*{\fill}
+
+    \imprimiragencia
+
+    \vspace{2cm}
+
+    Orientador: \imprimirorientador \par    
+    Autor: \imprimirautor
   \end{capa}
 }
+
+
+\makeatletter
+\hypersetup{
+  unicode=true,
+  pdftitle={\@title}, 
+  pdfauthor={\@author},
+  pdfsubject={\imprimirpreambulo},
+  pdfcreator={LaTeX with abnTeX2},
+  pdfkeywords={abnt}{latex}{abntex}{abntex2}{trabalho acadêmico}, 
+  colorlinks=true,       		% false: boxed links; true: colored links
+  linkcolor=blue,          	% color of internal links
+  citecolor=blue,        		% color of links to bibliography
+  filecolor=magenta,      	% color of file links
+  urlcolor=blue,
+  bookmarksdepth=4,
+  breaklinks=true            % deve ser usado com o pacote breakurl, sem ele não fuciona
+}
+\makeatother
+
+\setlrmarginsandblock{3cm}{2cm}{*}
+\setulmarginsandblock{3cm}{2cm}{*}
+\checkandfixthelayout
+
+\renewcommand{\ABNTEXchapterfont}{\rmfamily\bfseries}
+
+\setlength{\parindent}{1.3cm}
+\setlength{\parskip}{0.2cm}
+\frenchspacing
+
+% Uso do sumário tradicional, com espaçamento entre os capítulos
+\setlength{\cftbeforechapterskip}{1em}
+
+
+
