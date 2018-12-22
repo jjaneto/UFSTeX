@@ -18,6 +18,21 @@ Não deixe de declarar essas opções, pois elas são fundamentais. **Caso elas 
 ```tex
 \documentclass[pibic, final]{ufstex}
 ```
+Produzirá um relatório final do modelo PIBIC. Vale lembrar que para pesquisas PIBIC, a agência financiadora [deve ser informada nos elementos pré-textuais do relatório][pretextuais].
+
+Assim sendo, um documento em TeX deve seguir o mesmo formato descrito abaixo:
+
+```tex
+\documentclass[parcial,pibic]{ufstex}
+
+% Aqui são declarados pacotes adicionais ou semelhantes
+
+\begin{document}
+% Aqui vai o seu texto
+\end{document}
+```
+
+Onde o símbolo de percentagem `%` significa uma linha de comentário, que será ignorada no documento final.
 
 ### Documentação
 

@@ -192,5 +192,6 @@
 % Uso do sumário tradicional, com espaçamento entre os capítulos
 \setlength{\cftbeforechapterskip}{1em}
 
-
-
+% \SingleSpacing
+% \DoubleSpacing
+\OnehalfSpacing
